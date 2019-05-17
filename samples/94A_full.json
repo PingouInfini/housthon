@@ -15,11 +15,11 @@
       "code postal": "text",
       "Pays": "text"
     },
-    "nationalité": {
-      "nationalité actuelle": "text",
-      "Autre nationalités": "text",
-      "année d'acquisition": "text",
-      "année d'arrivée en france": "text"
+    "nationalite": {
+      "nationalite actuelle": "text",
+      "Autre nationalites": "text",
+      "annee d'acquisition": "text",
+      "annee d'arrivee en france": "text"
     },
     "domicile actuel": {
       "numero rue": "text",
@@ -48,7 +48,7 @@
       "Civil ou militaire": "text",
       "profession": "text",
       "grade": "text",
-      "armée ou arme d'appartenance": "test",
+      "armee ou arme d'appartenance": "test",
       "Ministere d'origine": "text",
       "Ministere d'emploi": "text",
       "Organisme d'affectation": "text",
@@ -116,7 +116,7 @@
     "Nombre enfant": "number",
     "Date de mariage ou pacs": "text",
     "Lieu de mariage ou pacs": "text",
-    "Carte identité": {
+    "Carte identite": {
       "numero": "text",
       "date delivrance": "text",
       "autorite delivrance": "text"
@@ -166,7 +166,7 @@
         "date naissance": "text",
         "lieu naissance": "text",
         "code postal": "text",
-        "nationalité": "text",
+        "nationalite": "text",
         "adresse domicile disticnt": "text"
       },
       {
@@ -179,7 +179,7 @@
         "date naissance": "text",
         "lieu naissance": "text",
         "code postal": "text",
-        "nationalité": "text",
+        "nationalite": "text",
         "adresse domicile disticnt": "text"
       },
       {
@@ -192,7 +192,7 @@
         "date naissance": "text",
         "lieu naissance": "text",
         "code postal": "text",
-        "nationalité": "text",
+        "nationalite": "text",
         "adresse domicile disticnt": "text"
       }
     ],
@@ -205,17 +205,17 @@
       "Date de naissance": "text",
       "lieu naissance": "text",
       "code postal lieu naissance": "text",
-      "nationalités": [
+      "nationalites": [
         "text",
         "text"
       ],
-      "autres nationalités": [
+      "autres nationalites": [
         "text",
         "text"
       ],
-      "année arrivée en france": "text",
+      "annee arrivee en france": "text",
       "pays naissance": "text",
-      "année acquisation nationalité fr": "text",
+      "annee acquisation nationalite fr": "text",
       "numero carte ID ou passeport": "text",
       "adresse domicile actuel ou dernier": "text",
       "nom adresse employeur actuel ou dernier": "text"
@@ -229,17 +229,17 @@
       "Date de naissance": "text",
       "lieu naissance": "text",
       "code postal lieu naissance": "text",
-      "nationalités": [
+      "nationalites": [
         "text",
         "text"
       ],
-      "autres nationalités": [
+      "autres nationalites": [
         "text",
         "text"
       ],
-      "année arrivée en france": "text",
+      "annee arrivee en france": "text",
       "pays naissance": "text",
-      "année acquisation nationalité fr": "text",
+      "annee acquisation nationalite fr": "text",
       "numero carte ID ou passeport": "text",
       "adresse domicile actuel ou dernier": "text",
       "nom adresse employeur actuel ou dernier": "text"
@@ -259,11 +259,11 @@
         "code postal": "text",
         "Pays": "text"
       },
-      "nationalité": {
-        "nationalité actuelle": "text",
-        "Autre nationalités": "text",
-        "année d'acquisition": "text",
-        "année d'arrivée en france": "text"
+      "nationalite": {
+        "nationalite actuelle": "text",
+        "Autre nationalites": "text",
+        "annee d'acquisition": "text",
+        "annee d'arrivee en france": "text"
       },
       "domicile actuel": {
         "numero rue": "text",
@@ -281,7 +281,7 @@
         "telephone": "text",
         "Email": "text"
       },
-      "Carte identité": {
+      "Carte identite": {
         "numero": "text",
         "date delivrance": "text",
         "autorite delivrance": "text"
@@ -321,7 +321,7 @@
         "Civil ou militaire": "text",
         "profession": "text",
         "grade": "text",
-        "armée ou arme d'appartenance": "test",
+        "armee ou arme d'appartenance": "test",
         "Ministere d'origine": "text",
         "Ministere d'emploi": "text",
         "Organisme d'affectation": "text",
@@ -364,7 +364,7 @@
           "date naissance": "text",
           "lieu naissance": "text",
           "code postal": "text",
-          "nationalité": "text",
+          "nationalite": "text",
           "adresse domicile disticnt": "text"
         },
         {
@@ -377,7 +377,7 @@
           "date naissance": "text",
           "lieu naissance": "text",
           "code postal": "text",
-          "nationalité": "text",
+          "nationalite": "text",
           "adresse domicile disticnt": "text"
         },
         {
@@ -390,7 +390,7 @@
           "date naissance": "text",
           "lieu naissance": "text",
           "code postal": "text",
-          "nationalité": "text",
+          "nationalite": "text",
           "adresse domicile disticnt": "text"
         }
       ],
@@ -403,17 +403,17 @@
         "Date de naissance": "text",
         "lieu naissance": "text",
         "code postal lieu naissance": "text",
-        "nationalités": [
+        "nationalites": [
           "text",
           "text"
         ],
-        "autres nationalités": [
+        "autres nationalites": [
           "text",
           "text"
         ],
-        "année arrivée en france": "text",
+        "annee arrivee en france": "text",
         "pays naissance": "text",
-        "année acquisation nationalité fr": "text",
+        "annee acquisation nationalite fr": "text",
         "numero carte ID ou passeport": "text",
         "adresse domicile actuel ou dernier": "text",
         "nom adresse employeur actuel ou dernier": "text"
@@ -427,17 +427,17 @@
         "Date de naissance": "text",
         "lieu naissance": "text",
         "code postal lieu naissance": "text",
-        "nationalités": [
+        "nationalites": [
           "text",
           "text"
         ],
-        "autres nationalités": [
+        "autres nationalites": [
           "text",
           "text"
         ],
-        "année arrivée en france": "text",
+        "annee arrivee en france": "text",
         "pays naissance": "text",
-        "année acquisation nationalité fr": "text",
+        "annee acquisation nationalite fr": "text",
         "numero carte ID ou passeport": "text",
         "adresse domicile actuel ou dernier": "text",
         "nom adresse employeur actuel ou dernier": "text"
