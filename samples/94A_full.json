@@ -1,3 +1,447 @@
 {
-	descrition: "full 94A"
+  "94A": {
+    "nom de famille": "text",
+    "nom d'epouse": "text",
+    "prenom": [
+      "text",
+      "text"
+    ],
+    "Date de naissance": "text",
+    "Sexe": "text",
+    "Surnoms": "text",
+    "photo": "text",
+    "lieu de naissance": {
+      "ville": "text",
+      "code postal": "text",
+      "Pays": "text"
+    },
+    "nationalité": {
+      "nationalité actuelle": "text",
+      "Autre nationalités": "text",
+      "année d'acquisition": "text",
+      "année d'arrivée en france": "text"
+    },
+    "domicile actuel": {
+      "numero rue": "text",
+      "code postal": "text",
+      "Commune Pays": "text",
+      "depuis le": "text",
+      "telephone": "text",
+      "Email": "text"
+    },
+    "domicile precedent": {
+      "numero rue": "text",
+      "code postal": "text",
+      "Commune Pays": "text",
+      "du": "text",
+      "au": "text"
+    },
+    "residence secondaire": {
+      "numero rue": "text",
+      "code postal": "text",
+      "Commune Pays": "text",
+      "depuis le": "text",
+      "telephone": "text",
+      "Email": "text"
+    },
+    "situation professionnel": {
+      "Civil ou militaire": "text",
+      "profession": "text",
+      "grade": "text",
+      "armée ou arme d'appartenance": "test",
+      "Ministere d'origine": "text",
+      "Ministere d'emploi": "text",
+      "Organisme d'affectation": "text",
+      "Depuis le": "text",
+      "Adresse professionnelle": "text",
+      "Tel professionnel": "text",
+      "Email professionnel": "text"
+    },
+    "emploi precedent": [
+      {
+        "nom entreprise": "text",
+        "adresse": "text",
+        "code postal": "text",
+        "fonction": "text",
+        "du": "text",
+        "au": "text"
+      },
+      {
+        "nom entreprise": "text",
+        "adresse": "text",
+        "code postal": "text",
+        "fonction": "text",
+        "du": "text",
+        "au": "text"
+      },
+      {
+        "nom entreprise": "text",
+        "adresse": "text",
+        "code postal": "text",
+        "fonction": "text",
+        "du": "text",
+        "au": "text"
+      }
+    ],
+    "Habilitation deja obtenu": {
+      "niveau": "text",
+      "depuis le": "text"
+    },
+    "Etude": [
+      {
+        "diplome": "text"
+      },
+      {
+        "diplome": "text"
+      },
+      {
+        "diplome": "text"
+      }
+    ],
+    "langue etrangere": [
+      {
+        "langue": "text",
+        "niveau": "text"
+      },
+      {
+        "langue": "text",
+        "niveau": "text"
+      },
+      {
+        "langue": "text",
+        "niveau": "text"
+      }
+    ],
+    "Situation familiale": "text",
+    "Nombre enfant": "number",
+    "Date de mariage ou pacs": "text",
+    "Lieu de mariage ou pacs": "text",
+    "Carte identité": {
+      "numero": "text",
+      "date delivrance": "text",
+      "autorite delivrance": "text"
+    },
+    "Passeport": {
+      "type": "text",
+      "numero": "text",
+      "date delivrance": "text",
+      "autorite delivrance": "text"
+    },
+    "Document etranger": {
+      "numero": "text",
+      "date delivrance": "text",
+      "autorite delivrance": "text"
+    },
+    "Voyages depuis 5 ans": [
+      {
+        "pays": "text",
+        "date debut": "text",
+        "date fin": "text",
+        "adresse": "text",
+        "motif": "text"
+      },
+      {
+        "pays": "text",
+        "date debut": "text",
+        "date fin": "text",
+        "adresse": "text",
+        "motif": "text"
+      },
+      {
+        "pays": "text",
+        "date debut": "text",
+        "date fin": "text",
+        "adresse": "text",
+        "motif": "text"
+      }
+    ],
+    "Enfants": [
+      {
+        "Nom": "text",
+        "prenom": [
+          "text",
+          "text"
+        ],
+        "sexe": "text",
+        "date naissance": "text",
+        "lieu naissance": "text",
+        "code postal": "text",
+        "nationalité": "text",
+        "adresse domicile disticnt": "text"
+      },
+      {
+        "Nom": "text",
+        "prenom": [
+          "text",
+          "text"
+        ],
+        "sexe": "text",
+        "date naissance": "text",
+        "lieu naissance": "text",
+        "code postal": "text",
+        "nationalité": "text",
+        "adresse domicile disticnt": "text"
+      },
+      {
+        "Nom": "text",
+        "prenom": [
+          "text",
+          "text"
+        ],
+        "sexe": "text",
+        "date naissance": "text",
+        "lieu naissance": "text",
+        "code postal": "text",
+        "nationalité": "text",
+        "adresse domicile disticnt": "text"
+      }
+    ],
+    "Pere": {
+      "nom": "text",
+      "prenom": [
+        "text",
+        "text"
+      ],
+      "Date de naissance": "text",
+      "lieu naissance": "text",
+      "code postal lieu naissance": "text",
+      "nationalités": [
+        "text",
+        "text"
+      ],
+      "autres nationalités": [
+        "text",
+        "text"
+      ],
+      "année arrivée en france": "text",
+      "pays naissance": "text",
+      "année acquisation nationalité fr": "text",
+      "numero carte ID ou passeport": "text",
+      "adresse domicile actuel ou dernier": "text",
+      "nom adresse employeur actuel ou dernier": "text"
+    },
+    "Mere": {
+      "nom": "text",
+      "prenom": [
+        "text",
+        "text"
+      ],
+      "Date de naissance": "text",
+      "lieu naissance": "text",
+      "code postal lieu naissance": "text",
+      "nationalités": [
+        "text",
+        "text"
+      ],
+      "autres nationalités": [
+        "text",
+        "text"
+      ],
+      "année arrivée en france": "text",
+      "pays naissance": "text",
+      "année acquisation nationalité fr": "text",
+      "numero carte ID ou passeport": "text",
+      "adresse domicile actuel ou dernier": "text",
+      "nom adresse employeur actuel ou dernier": "text"
+    },
+    "Conjoint": {
+      "nom de famille": "text",
+      "nom d'epouse": "text",
+      "prenom": [
+        "text",
+        "text"
+      ],
+      "Date de naissance": "text",
+      "Sexe": "text",
+      "Surnoms": "text",
+      "lieu de naissance": {
+        "ville": "text",
+        "code postal": "text",
+        "Pays": "text"
+      },
+      "nationalité": {
+        "nationalité actuelle": "text",
+        "Autre nationalités": "text",
+        "année d'acquisition": "text",
+        "année d'arrivée en france": "text"
+      },
+      "domicile actuel": {
+        "numero rue": "text",
+        "code postal": "text",
+        "Commune Pays": "text",
+        "depuis le": "text",
+        "telephone": "text",
+        "Email": "text"
+      },
+      "residence secondaire": {
+        "numero rue": "text",
+        "code postal": "text",
+        "Commune Pays": "text",
+        "depuis le": "text",
+        "telephone": "text",
+        "Email": "text"
+      },
+      "Carte identité": {
+        "numero": "text",
+        "date delivrance": "text",
+        "autorite delivrance": "text"
+      },
+      "Passeport": {
+        "type": "text",
+        "numero": "text",
+        "date delivrance": "text",
+        "autorite delivrance": "text"
+      },
+      "Etude": [
+        {
+          "diplome": "text"
+        },
+        {
+          "diplome": "text"
+        },
+        {
+          "diplome": "text"
+        }
+      ],
+      "langue etrangere": [
+        {
+          "langue": "text",
+          "niveau": "text"
+        },
+        {
+          "langue": "text",
+          "niveau": "text"
+        },
+        {
+          "langue": "text",
+          "niveau": "text"
+        }
+      ],
+      "situation professionnel": {
+        "Civil ou militaire": "text",
+        "profession": "text",
+        "grade": "text",
+        "armée ou arme d'appartenance": "test",
+        "Ministere d'origine": "text",
+        "Ministere d'emploi": "text",
+        "Organisme d'affectation": "text",
+        "Depuis le": "text",
+        "Adresse professionnelle": "text",
+        "Tel professionnel": "text",
+        "Email professionnel": "text"
+      },
+      "Voyages depuis 5 ans": [
+        {
+          "pays": "text",
+          "date debut": "text",
+          "date fin": "text",
+          "adresse": "text",
+          "motif": "text"
+        },
+        {
+          "pays": "text",
+          "date debut": "text",
+          "date fin": "text",
+          "adresse": "text",
+          "motif": "text"
+        },
+        {
+          "pays": "text",
+          "date debut": "text",
+          "date fin": "text",
+          "adresse": "text",
+          "motif": "text"
+        }
+      ],
+      "Enfants": [
+        {
+          "Nom": "text",
+          "prenom": [
+            "text",
+            "text"
+          ],
+          "sexe": "text",
+          "date naissance": "text",
+          "lieu naissance": "text",
+          "code postal": "text",
+          "nationalité": "text",
+          "adresse domicile disticnt": "text"
+        },
+        {
+          "Nom": "text",
+          "prenom": [
+            "text",
+            "text"
+          ],
+          "sexe": "text",
+          "date naissance": "text",
+          "lieu naissance": "text",
+          "code postal": "text",
+          "nationalité": "text",
+          "adresse domicile disticnt": "text"
+        },
+        {
+          "Nom": "text",
+          "prenom": [
+            "text",
+            "text"
+          ],
+          "sexe": "text",
+          "date naissance": "text",
+          "lieu naissance": "text",
+          "code postal": "text",
+          "nationalité": "text",
+          "adresse domicile disticnt": "text"
+        }
+      ],
+      "Pere": {
+        "nom": "text",
+        "prenom": [
+          "text",
+          "text"
+        ],
+        "Date de naissance": "text",
+        "lieu naissance": "text",
+        "code postal lieu naissance": "text",
+        "nationalités": [
+          "text",
+          "text"
+        ],
+        "autres nationalités": [
+          "text",
+          "text"
+        ],
+        "année arrivée en france": "text",
+        "pays naissance": "text",
+        "année acquisation nationalité fr": "text",
+        "numero carte ID ou passeport": "text",
+        "adresse domicile actuel ou dernier": "text",
+        "nom adresse employeur actuel ou dernier": "text"
+      },
+      "Mere": {
+        "nom": "text",
+        "prenom": [
+          "text",
+          "text"
+        ],
+        "Date de naissance": "text",
+        "lieu naissance": "text",
+        "code postal lieu naissance": "text",
+        "nationalités": [
+          "text",
+          "text"
+        ],
+        "autres nationalités": [
+          "text",
+          "text"
+        ],
+        "année arrivée en france": "text",
+        "pays naissance": "text",
+        "année acquisation nationalité fr": "text",
+        "numero carte ID ou passeport": "text",
+        "adresse domicile actuel ou dernier": "text",
+        "nom adresse employeur actuel ou dernier": "text"
+      }
+    }
+  }
 }
