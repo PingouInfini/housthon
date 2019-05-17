@@ -1,3 +1,35 @@
+__pycache__
+.DS_Store
+venv
+set-environment.sh
+stashed
+*.json
+*.jsonl
+*.txt
+!requirements.txt
+*.pickle
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.html
+
+######################
+# Intellij
+######################
+.idea/
+*.iws
+*.ipr
+*.ids
+*.orig
+classes/
+out/
+
+######################
+# virtualenv
+######################
+*virtual*env/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
