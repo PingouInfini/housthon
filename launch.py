@@ -7,7 +7,7 @@ custom_port = 8090
 app = Flask(__name__)
 
 @app.route('/start_process94A', methods=['POST'])
-def prepare_94A():
+def process_94A():
     habilitation_json = request.get_json()
     nomfamille = habilitation_json['94A']['nom de famille']
     prenom = habilitation_json['94A']['prenom'][1]
