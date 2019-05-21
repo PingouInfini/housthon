@@ -1,0 +1,15 @@
+version: '3'
+services:
+  housthon:
+    build:
+      context: ./context/
+    environment:
+          COLISSITHON_IP: 192.168.0.13
+          COLISSITHON_PORT: 9876
+          HOUSTHON_PORT: 8090
+    ports:
+    - "8090:8090"
+    networks:
+    - reach
+networks:
+  reach:
