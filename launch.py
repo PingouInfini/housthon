@@ -3,11 +3,11 @@ import os
 import socket
 import src.generators as generators
 import src.services as services
+import src.producers as producers
 from json import dumps
 from flask import Flask
 from flask import request
 from kafka import KafkaProducer
-
 
 #pour creer service REST
 app = Flask(__name__)
@@ -15,18 +15,23 @@ app = Flask(__name__)
 #pour recupere variable d'env du yml
 housthon_port=os.environ['HOUSTHON_PORT']
 colissithon_url_port="http://"+str(os.environ['COLISSITHON_IP'])+":"+str(os.environ['COLISSITHON_PORT'])
-kafka_endpoint = str(os.environ["KAFKA_IP"]) + ":" + str(os.environ["KAFKA_PORT"])
+kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
+
 #pour tester sur poste de dev
 #housthon_port=8090
 #colissithon_url_port="http://192.168.0.13:9876"
 #kafka_endpoint =  "192.168.0.13:8092"
 
+
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
 
+topictures=str(os.environ['TOPIC_PICTURE'])
+tweetopic=str(os.environ['TOPIC_TWITTER'])
 producer = KafkaProducer(bootstrap_servers=[kafka_endpoint], value_serializer=lambda x: dumps(x).encode('utf-8'))
 tweet_directory = "samples/tweets"
 pictures_directory = "samples/pictures"
+
 
 print("housthon_port "+str(housthon_port))
 print("colissithon_url_port "+colissithon_url_port)
@@ -55,6 +60,7 @@ def process_94A():
 
     #creation du candidat
     idbio=services.create_bio_minibio(prenom, nomfamille, image, typeimage, colissithon_url_port)
+    send_minbio_googlethon(nomfamille, prenom, idbio, producer)
     #creation du pere
     idbio_pere=services.create_bio_minibio(prenom_pere, nom_famille_pere, None, None,  colissithon_url_port)
     #relation entre les deux id
@@ -72,10 +78,14 @@ def process_94A():
     idbio_mere_conjoint=services.create_bio_minibio(prenom_mere_conjoint, nom_famille_mere_conjoint, None, None,  colissithon_url_port)
     services.bind_bio_colissithon(idbio,idbio_mere_conjoint, colissithon_url_port)
 
-    #generators.raw_data_generator(tweet_directory, idbio, producer)
-    #generators.pictures_generator(pictures_directory, idbio, producer)
+    #generators.raw_data_generator(tweet_directory, idbio, producer, tweetopic)
+    #generators.pictures_generator(pictures_directory, idbio, producer, topictures)
     return idbio
 
+def send_minbio_googlethon(nom, prenom, idbio, producer):
+    topicgooglethon=os.environ['TOPIC_GOOGLETHON']
+    #topicgooglethon="topicgoogle"
+    producers.fill_googlethon_kafka(nom,prenom, idbio,topicgooglethon,producer)
 
 if __name__ == '__main__':
     app.run(host=ip, port=housthon_port)

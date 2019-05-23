@@ -14,7 +14,7 @@ services:
         KAFKA_ADVERTISED_HOST_NAME: 192.168.0.13
         KAFKA_ADVERTISED_PORT: 8092
         KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-        KAFKA_CREATE_TOPICS: "tweetopic:1:1,topictures:1:1"
+        KAFKA_CREATE_TOPICS: "topicgoogle:1:1,topictravel:1:1,topictures:1:1,tweetopic:1:1"
       ports:
         - 8092:9092
       networks:

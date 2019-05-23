@@ -6,9 +6,7 @@ import src.producers as producers
 
 resolved_locations = {}
 
-#ATTENTION, CURSEUR LIMITANT LE NOMBRE DE TWEETS INJECTES
-
-def raw_data_generator(path_to_tweets_dir, bio_id, producer):
+def raw_data_generator(path_to_tweets_dir, bio_id, producer, topic):
     index = 0
     for file in os.listdir(path_to_tweets_dir):
         index += 1
@@ -18,14 +16,14 @@ def raw_data_generator(path_to_tweets_dir, bio_id, producer):
             with open(os.path.join(path_to_tweets_dir, file)) as json_file:
                 json_tweet = json.load(json_file)
             if index < 10:
-                producers.fill_tweets_kafka(json_tweet, bio_id, producer)
+                producers.fill_kafka(json_tweet, bio_id, producer, topic)
             else:
                 break
         except:
             raise ValueError("Problem before sending tweet to Kafka")
 
 
-def pictures_generator(path_to_pictures, bio_id, producer):
+def pictures_generator(path_to_pictures, bio_id, producer, topic):
     # TODO génère des pictures pour remplir la file Kafka, et return data + topic
     index = 0
     for file in os.listdir(path_to_pictures):
@@ -42,7 +40,7 @@ def pictures_generator(path_to_pictures, bio_id, producer):
                 'extension': file_type_point,
                 'image': image
                 }
-             producers.fill_pictures_kafka(picture, bio_id, producer)
+             producers.fill_pictures_kafka(picture, bio_id, producer, topic)
              time.sleep(5)
             else:
                 break
