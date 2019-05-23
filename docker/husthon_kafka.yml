@@ -13,7 +13,7 @@ services:
     - "8090:8090"
     networks:
     - reach
- #BROKER
+#BROKER
  zookeeper:
       image: wurstmeister/zookeeper:latest
       ports:
@@ -24,7 +24,7 @@ services:
       image: wurstmeister/kafka:latest
       container_name: kafka
       environment:
-        KAFKA_ADVERTISED_HOST_NAME: 10.71.2.66
+        KAFKA_ADVERTISED_HOST_NAME: 192.168.0.13
         KAFKA_ADVERTISED_PORT: 8092
         KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
         KAFKA_CREATE_TOPICS: "tweetopic:1:1,topictures:1:1"
