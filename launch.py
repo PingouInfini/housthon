@@ -21,11 +21,6 @@ kafka_endpoint = str(os.environ["KAFKA_IP"]) + ":" + str(os.environ["KAFKA_PORT"
 #colissithon_url_port="http://192.168.0.13:9876"
 #kafka_endpoint =  "192.168.0.13:8092"
 
-#url des services REST de collissithon
-createbio_url=colissithon_url_port+"/create_bio"
-createminibio_url=colissithon_url_port+"/create_minibio"
-bindbio_url=colissithon_url_port+"/bind_bio"
-
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
 
@@ -34,12 +29,13 @@ tweet_directory = "samples/tweets"
 pictures_directory = "samples/pictures"
 
 print("housthon_port "+str(housthon_port))
-print("createbio_url "+createbio_url)
+print("colissithon_url_port "+colissithon_url_port)
 print("ip container "+str(ip))
 
 @app.route('/start_process94A', methods=['POST'])
 def process_94A():
     habilitation_json = request.get_json()
+
     #recuperation des champs du json
     nomfamille = habilitation_json['94A']['nom de famille']
     prenom = habilitation_json['94A']['prenom'][0]
@@ -56,55 +52,25 @@ def process_94A():
     nom_famille_mere_conjoint=habilitation_json['94A']['Conjoint']['Mere']['nom']
     prenom_mere_conjoint=habilitation_json['94A']['Conjoint']['Mere']['prenom'][0]
 
-    #creation des json pour create bio
-    bio = {
-        "biographicsFirstName": prenom,
-        "biographicsName": nomfamille,
-        "biographicsImageContentType": typeimage,
-        "biographicsImage": image
-    }
 
-    bio_pere = {
-        "biographicsFirstName": prenom_pere,
-        "biographicsName": nom_famille_pere
-    }
-
-    bio_mere = {
-        "biographicsFirstName": prenom_mere,
-        "biographicsName": nom_famille_mere
-    }
-
-    bio_conjoint = {
-        "biographicsFirstName": prenom_conjoint,
-        "biographicsName": nom_famille_conjoint,
-    }
-
-    bio_pere_conjoint = {
-        "biographicsFirstName": prenom_pere_conjoint,
-        "biographicsName": nom_famille_pere_conjoint,
-    }
-
-    bio_mere_conjoint = {
-        "biographicsFirstName": prenom_mere_conjoint,
-        "biographicsName": nom_famille_mere_conjoint,
-    }
-
-    idbio=services.create_bio_colissithon(bio, createbio_url)
-    idbio_pere=services.create_bio_colissithon(bio_pere,createminibio_url)
+    #creation du candidat
+    idbio=services.create_bio_minibio(prenom, nomfamille, image, typeimage, colissithon_url_port)
+    #creation du pere
+    idbio_pere=services.create_bio_minibio(prenom_pere, nom_famille_pere, None, None,  colissithon_url_port)
     #relation entre les deux id
-    services.bind_bio_colissithon(idbio,idbio_pere, bindbio_url)
-
-    idbio_mere=services.create_bio_colissithon(bio_mere,createminibio_url)
-    services.bind_bio_colissithon(idbio,idbio_mere, bindbio_url)
-
-    idbio_conjoint=services.create_bio_colissithon(bio_conjoint,createminibio_url)
-    services.bind_bio_colissithon(idbio,idbio_conjoint, bindbio_url)
-
-    idbio_pere_conjoint=services.create_bio_colissithon(bio_pere_conjoint,createminibio_url)
-    services.bind_bio_colissithon(idbio,idbio_pere_conjoint, bindbio_url)
-
-    idbio_mere_conjoint=services.create_bio_colissithon(bio_mere_conjoint,createminibio_url)
-    services.bind_bio_colissithon(idbio,idbio_mere_conjoint, bindbio_url)
+    services.bind_bio_colissithon(idbio,idbio_pere, colissithon_url_port)
+    #creation de la mere
+    idbio_mere=services.create_bio_minibio(prenom_mere, nom_famille_mere, None, None,  colissithon_url_port)
+    services.bind_bio_colissithon(idbio,idbio_mere, colissithon_url_port)
+    #creation du conjoint
+    idbio_conjoint=services.create_bio_minibio(prenom_conjoint, nom_famille_conjoint, None, None,  colissithon_url_port)
+    services.bind_bio_colissithon(idbio,idbio_conjoint, colissithon_url_port)
+    #creation du pere du conjoint
+    idbio_pere_conjoint=services.create_bio_minibio(prenom_pere_conjoint, nom_famille_pere_conjoint, None, None,  colissithon_url_port)
+    services.bind_bio_colissithon(idbio,idbio_pere_conjoint, colissithon_url_port)
+    #creation de la mere du conjoint
+    idbio_mere_conjoint=services.create_bio_minibio(prenom_mere_conjoint, nom_famille_mere_conjoint, None, None,  colissithon_url_port)
+    services.bind_bio_colissithon(idbio,idbio_mere_conjoint, colissithon_url_port)
 
     #generators.raw_data_generator(tweet_directory, idbio, producer)
     #generators.pictures_generator(pictures_directory, idbio, producer)
