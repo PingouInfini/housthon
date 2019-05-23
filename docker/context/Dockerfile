@@ -10,6 +10,9 @@ RUN apt-get update && \
 COPY sshd_config /etc/ssh/sshd_config
 RUN mkdir /app
 COPY dockerdist/*.* /app/
+RUN mkdir /app/src
+COPY dockerdist/src /app/src
+
 
 RUN apt-get update
 RUN apt-get install -y python3-pip
