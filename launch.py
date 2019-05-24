@@ -16,18 +16,21 @@ app = Flask(__name__)
 housthon_port=os.environ['HOUSTHON_PORT']
 colissithon_url_port="http://"+str(os.environ['COLISSITHON_IP'])+":"+str(os.environ['COLISSITHON_PORT'])
 kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
+topictures=str(os.environ['TOPIC_PICTURE'])
+tweetopic=str(os.environ['TOPIC_TWITTER'])
+topicgooglethon=os.environ['TOPIC_GOOGLETHON']
 
 #pour tester sur poste de dev
 #housthon_port=8090
 #colissithon_url_port="http://192.168.0.13:9876"
 #kafka_endpoint =  "192.168.0.13:8092"
-
+#topictures="topictures"
+#tweetopic="tweetopic"
+#topicgooglethon="topicgoogle"
 
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
 
-topictures=str(os.environ['TOPIC_PICTURE'])
-tweetopic=str(os.environ['TOPIC_TWITTER'])
 producer = KafkaProducer(bootstrap_servers=[kafka_endpoint], value_serializer=lambda x: dumps(x).encode('utf-8'))
 tweet_directory = "samples/tweets"
 pictures_directory = "samples/pictures"
@@ -60,7 +63,7 @@ def process_94A():
 
     #creation du candidat
     idbio=services.create_bio_minibio(prenom, nomfamille, image, typeimage, colissithon_url_port)
-    send_minbio_googlethon(nomfamille, prenom, idbio, producer)
+    producers.fill_googlethon_kafka(nomfamille,prenom, idbio,topicgooglethon,producer)
     #creation du pere
     idbio_pere=services.create_bio_minibio(prenom_pere, nom_famille_pere, None, None,  colissithon_url_port)
     #relation entre les deux id
@@ -78,14 +81,10 @@ def process_94A():
     idbio_mere_conjoint=services.create_bio_minibio(prenom_mere_conjoint, nom_famille_mere_conjoint, None, None,  colissithon_url_port)
     services.bind_bio_colissithon(idbio,idbio_mere_conjoint, colissithon_url_port)
 
-    #generators.raw_data_generator(tweet_directory, idbio, producer, tweetopic)
-    #generators.pictures_generator(pictures_directory, idbio, producer, topictures)
+    generators.raw_data_generator(tweet_directory, idbio, producer, tweetopic)
+    generators.pictures_generator(pictures_directory, idbio, producer, topictures)
     return idbio
 
-def send_minbio_googlethon(nom, prenom, idbio, producer):
-    topicgooglethon=os.environ['TOPIC_GOOGLETHON']
-    #topicgooglethon="topicgoogle"
-    producers.fill_googlethon_kafka(nom,prenom, idbio,topicgooglethon,producer)
 
 if __name__ == '__main__':
     app.run(host=ip, port=housthon_port)
