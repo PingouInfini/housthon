@@ -7,11 +7,12 @@ services:
           COLISSITHON_IP: 192.168.0.13
           COLISSITHON_PORT: 9876
           HOUSTHON_PORT: 8090
-          KAFKA_IP: 192.168.0.50
+          KAFKA_IP: 192.168.0.13
           KAFKA_PORT: 8092
-          TOPIC_GOOGLETHON : topicgoogle
-          TOPIC_TWITTHON: topictweet
-          TOPIC_TRAVELTHON: topictravel
+          TOPIC_GOOGLETHON : googlethon_in
+          TOPIC_TWITTHON: tweethon_in
+          TOPIC_TRAVELTHON: travelthon_in
+          TOPIC_COMPARATHON: comparathon_in
     ports:
     - "8090:8090"
     networks:
@@ -30,7 +31,7 @@ services:
         KAFKA_ADVERTISED_HOST_NAME: 192.168.0.13
         KAFKA_ADVERTISED_PORT: 8092
         KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-        KAFKA_CREATE_TOPICS: "topicgoogle:1:1,topictravel:1:1,topictures:1:1,tweetopic:1:1"
+        KAFKA_CREATE_TOPICS: "googlethon_in:1:1,googlethon_out:1:1,travelthon_in:1:1,travelthon_out:1:1,comparathon_in:1:1,comparathon_out:1:1,tweethon_in:1:1,tweethon_out:1:1"
       ports:
         - 8092:9092
       networks:
