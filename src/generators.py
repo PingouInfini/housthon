@@ -13,7 +13,7 @@ def raw_data_generator(path_to_tweets_dir, bio_id, producer, topic):
         fname, fext = os.path.splitext(file)
         print(fname)
         try:
-            with open(os.path.join(path_to_tweets_dir, file)) as json_file:
+            with open(os.path.join(path_to_tweets_dir, file), encoding='utf-8') as json_file:
                 json_tweet = json.load(json_file)
             if index < 10:
                 producers.fill_kafka(json_tweet, bio_id, producer, topic)
