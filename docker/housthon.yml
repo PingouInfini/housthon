@@ -14,7 +14,7 @@ services:
           TOPIC_TRAVELTHON: travelthon_in
           TOPIC_COMPARATHON: comparathon_in
           PATH_TWEET: /app/samples/tweets
-          PATH_PICTURES: /app/sample/pictures
+          PATH_PICTURES: /app/samples/pictures
     ports:
     - "8090:8090"
     networks:
