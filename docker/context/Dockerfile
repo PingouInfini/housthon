@@ -13,7 +13,7 @@ COPY dockerdist/*.* /app/
 RUN mkdir /app/src
 COPY dockerdist/src /app/src
 RUN mkdir /app/samples
-COPY dockerdist/src /app/samples
+COPY dockerdist/samples /app/samples
 
 RUN apt-get update
 RUN apt-get install -y python3-pip
