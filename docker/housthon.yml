@@ -13,6 +13,8 @@ services:
           TOPIC_TWITTHON: tweethon_in
           TOPIC_TRAVELTHON: travelthon_in
           TOPIC_COMPARATHON: comparathon_in
+          PATH_TWEET: samples/tweets
+          PATH_PICTURES: sample/pictures
     ports:
     - "8090:8090"
     networks:

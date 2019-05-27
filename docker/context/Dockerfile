@@ -12,7 +12,8 @@ RUN mkdir /app
 COPY dockerdist/*.* /app/
 RUN mkdir /app/src
 COPY dockerdist/src /app/src
-
+RUN mkdir /app/samples
+COPY dockerdist/src /app/samples
 
 RUN apt-get update
 RUN apt-get install -y python3-pip
@@ -20,7 +21,7 @@ RUN apt-get install -y curl
 RUN apt-get install -y unzip
 RUN apt-get install -y vim
 
-RUN pip3 install --no-cache-dir -r /app/requirements.txt
+#RUN pip3 install --no-cache-dir -r /app/requirements.txt
 
 RUN  apt-get -y autoclean && apt-get -y autoremove && \
      apt-get -y purge $(dpkg --get-selections | grep deinstall | sed s/deinstall//g) && \

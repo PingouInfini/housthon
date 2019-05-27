@@ -13,30 +13,32 @@ from kafka import KafkaProducer
 app = Flask(__name__)
 
 #pour recupere variable d'env du yml
-#housthon_port=os.environ['HOUSTHON_PORT']
-#colissithon_url_port="http://"+str(os.environ['COLISSITHON_IP'])+":"+str(os.environ['COLISSITHON_PORT'])
-#kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
-#comparathon_in=str(os.environ['TOPIC_GOOGLETHON'])
-#tweethon_in=str(os.environ['TOPIC_TWITTHON'])
-#googlethon_in=os.environ['TOPIC_GOOGLETHON']
-#travelthon_in=os.environ['TOPIC_TRAVELTHON']
+housthon_port=os.environ['HOUSTHON_PORT']
+colissithon_url_port="http://"+str(os.environ['COLISSITHON_IP'])+":"+str(os.environ['COLISSITHON_PORT'])
+kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
+comparathon_in=str(os.environ['TOPIC_GOOGLETHON'])
+tweethon_in=str(os.environ['TOPIC_TWITTHON'])
+googlethon_in=os.environ['TOPIC_GOOGLETHON']
+travelthon_in=os.environ['TOPIC_TRAVELTHON']
+tweet_directory = os.environ['PATH_TWEET']
+pictures_directory = os.environ['PATH_PICTURES']
+
 
 #pour tester sur poste de dev
-housthon_port=8090
-colissithon_url_port="http://192.168.0.13:9876"
-kafka_endpoint =  "192.168.0.13:8092"
-comparathon_in="comparathon_in"
-tweethon_in="tweethon_in"
-googlethon_in="googlethon_in"
-travelthon_in="travelthon_in"
+#housthon_port=8090
+#colissithon_url_port="http://192.168.0.13:9876"
+#kafka_endpoint =  "192.168.0.13:8092"
+#comparathon_in="comparathon_in"
+#tweethon_in="tweethon_in"
+#googlethon_in="googlethon_in"
+#travelthon_in="travelthon_in"
+#tweet_directory = "samples/tweets"
+#pictures_directory = "samples/pictures"
 
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
 
 producer = KafkaProducer(bootstrap_servers=[kafka_endpoint], value_serializer=lambda x: dumps(x).encode('utf-8'))
-tweet_directory = "samples/tweets"
-pictures_directory = "samples/pictures"
-
 
 print("housthon_port "+str(housthon_port))
 print("colissithon_url_port "+colissithon_url_port)
