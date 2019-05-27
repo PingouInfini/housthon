@@ -43,6 +43,8 @@ producer = KafkaProducer(bootstrap_servers=[kafka_endpoint], value_serializer=la
 print("housthon_port "+str(housthon_port))
 print("colissithon_url_port "+colissithon_url_port)
 print("ip container "+str(ip))
+print("Tweet Path: "+str(tweet_directory))
+print("Tweet Pictures: "+str(pictures_directory))
 
 @app.route('/start_process94A', methods=['POST'])
 def process_94A():
