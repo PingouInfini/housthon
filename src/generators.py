@@ -41,7 +41,6 @@ def pictures_generator(path_to_pictures, bio_id, producer, topic):
                 'image': image
                 }
              producers.fill_kafka(picture, bio_id, producer, topic)
-             time.sleep(5)
             else:
                 break
         except:
