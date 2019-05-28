@@ -4,20 +4,17 @@ services:
     build:
       context: ./context/
     environment:
-          COLISSITHON_IP: 192.168.0.13
+          COLISSITHON_IP: 192.168.0.40
           COLISSITHON_PORT: 9876
           HOUSTHON_PORT: 8090
-          KAFKA_IP: 192.168.0.13
+          KAFKA_IP: 192.168.0.40
           KAFKA_PORT: 8092
-          TOPIC_GOOGLETHON : googlethon_in
-          TOPIC_TWITTHON: tweethon_in
-          TOPIC_TRAVELTHON: travelthon_in
-          TOPIC_COMPARATHON: comparathon_in
+          TOPIC_TWITTHON: tweethon
+          TOPIC_TRAVELTHON: travelthon
+          TOPIC_COMPARATHON: comparathon
+          TOPIC_GOOGLETHON: googlethon
           PATH_TWEET: /app/samples/tweets
           PATH_PICTURES: /app/samples/pictures
     ports:
     - "8090:8090"
-    networks:
-    - reach
-networks:
-  reach:
+
