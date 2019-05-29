@@ -1,7 +1,6 @@
 import requests
 import os
 import socket
-import src.generators as generators
 import src.services as services
 import src.producers as producers
 from json import dumps
@@ -16,7 +15,6 @@ app = Flask(__name__)
 housthon_port = os.environ['HOUSTHON_PORT']
 colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
 kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
-comparathon_in = str(os.environ['TOPIC_COMPARATHON'])
 tweethon_in = str(os.environ['TOPIC_TWITTHON'])
 googlethon_in = os.environ['TOPIC_GOOGLETHON']
 travelthon_in = os.environ['TOPIC_TRAVELTHON']
@@ -32,6 +30,7 @@ topic_housTOcompara = os.environ['topic_housTOcompara']
 # tweethon_in="tweethon_in"
 # googlethon_in="googlethon_in"
 # travelthon_in="travelthon_in"
+# topic_housTOcompara ="housToCompara"
 # tweet_directory = "samples/tweets"
 # pictures_directory = "samples/pictures"
 
@@ -106,8 +105,6 @@ def process_94A():
     # envoi dans housTOcompara pour récupération des images
     producers.fill_housTOcompara(nomfamille, prenom, image, extension, idbio, producer, topic_housTOcompara)
 
-    generators.raw_data_generator(tweet_directory, idbio, producer, tweethon_in)
-    generators.pictures_generator(pictures_directory, idbio, producer, comparathon_in)
     return idbio
 
 

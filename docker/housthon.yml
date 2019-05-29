@@ -9,11 +9,10 @@ services:
           HOUSTHON_PORT: 8090
           KAFKA_IP: 192.168.0.40
           KAFKA_PORT: 8092
-          TOPIC_TWITTHON: tweethon
-          TOPIC_TRAVELTHON: travelthon
-          TOPIC_COMPARATHON: comparathon
-          TOPIC_GOOGLETHON: googlethon
-          topic_housTOcompara: housTOcompara
+          TOPIC_TWITTHON: housToTwit
+          TOPIC_TRAVELTHON: housToTravel
+          TOPIC_GOOGLETHON: housToGoogle
+          topic_housTOcompara: housToCompara
           PATH_TWEET: /app/samples/tweets
           PATH_PICTURES: /app/samples/pictures
     ports:
