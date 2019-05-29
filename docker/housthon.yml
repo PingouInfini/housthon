@@ -13,6 +13,7 @@ services:
           TOPIC_TRAVELTHON: travelthon
           TOPIC_COMPARATHON: comparathon
           TOPIC_GOOGLETHON: googlethon
+          topic_housTOcompara: housTOcompara
           PATH_TWEET: /app/samples/tweets
           PATH_PICTURES: /app/samples/pictures
     ports:
