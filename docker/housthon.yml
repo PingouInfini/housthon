@@ -4,7 +4,7 @@ services:
     build:
       context: ./context/
     environment:
-          COLISSITHON_IP: 192.168.0.40
+          COLISSITHON_IP: colissithon-ip
           COLISSITHON_PORT: 9876
           HOUSTHON_PORT: 8090
           KAFKA_IP: 192.168.0.40
