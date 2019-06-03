@@ -1,13 +1,14 @@
 version: '3'
 services:
   housthon:
+    container_name: housthon
     build:
       context: ./context/
     environment:
-          COLISSITHON_IP: colissithon-ip
+          COLISSITHON_IP: 192.168.0.31
           COLISSITHON_PORT: 9876
           HOUSTHON_PORT: 8090
-          KAFKA_IP: kafka-ip
+          KAFKA_IP: 192.168.0.31
           KAFKA_PORT: 8092
           TOPIC_TWITTHON: housToTwit
           TOPIC_TRAVELTHON: housToTravel

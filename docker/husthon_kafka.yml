@@ -1,13 +1,14 @@
 version: '3'
 services:
  housthon:
+    container_name: housthon
     build:
       context: ./context/
     environment:
-          COLISSITHON_IP: colissithon-ip
+          COLISSITHON_IP: 192.168.0.31
           COLISSITHON_PORT: 9876
           HOUSTHON_PORT: 8097
-          KAFKA_IP: kafka-ip
+          KAFKA_IP: 192.168.0.31
           KAFKA_PORT: 8092
           TOPIC_GOOGLETHON : housToGoogle
           TOPIC_TWITTHON: housToTwit
@@ -26,7 +27,7 @@ services:
       image: wurstmeister/kafka:latest
       container_name: kafka
       environment:
-        KAFKA_ADVERTISED_HOST_NAME: kafka-ip
+        KAFKA_ADVERTISED_HOST_NAME: 192.168.0.31
         KAFKA_ADVERTISED_PORT: 8092
         KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
         KAFKA_CREATE_TOPICS: "housToGoogle:1:1,housToTwit:1:1,housToTravel:1:1,housToCompara:1:1,urlToScrapy:1:1,googleToTwit:1:1,textToNER:1:1,tweetToColissi:1:1,tweetToCrousti:1:1,ggimgToColissi:1:1,locToColissi:1:1,bioToColissi:1:1,orgaToColissi:1:1,mediaToColissi:1:1"
