@@ -7,7 +7,7 @@ services:
           COLISSITHON_IP: colissithon-ip
           COLISSITHON_PORT: 9876
           HOUSTHON_PORT: 8090
-          KAFKA_IP: 192.168.0.40
+          KAFKA_IP: kafka-ip
           KAFKA_PORT: 8092
           TOPIC_TWITTHON: housToTwit
           TOPIC_TRAVELTHON: housToTravel
