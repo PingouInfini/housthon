@@ -20,7 +20,7 @@ googlethon_in = os.environ['TOPIC_GOOGLETHON']
 travelthon_in = os.environ['TOPIC_TRAVELTHON']
 tweet_directory = os.environ['PATH_TWEET']
 pictures_directory = os.environ['PATH_PICTURES']
-topic_housTOcompara = os.environ['topic_housTOcompara']
+topic_housTOcompara = os.environ['TOPIC_COMPARATHON']
 
 # pour tester sur poste de dev
 # housthon_port=8090

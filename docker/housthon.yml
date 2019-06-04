@@ -13,7 +13,7 @@ services:
           TOPIC_TWITTHON: housToTwit
           TOPIC_TRAVELTHON: housToTravel
           TOPIC_GOOGLETHON: housToGoogle
-          topic_housTOcompara: housToCompara
+          TOPIC_COMPARATHON: housToCompara
           PATH_TWEET: /app/samples/tweets
           PATH_PICTURES: /app/samples/pictures
     ports:
