@@ -6,10 +6,10 @@ services:
     build:
       context: ./context/
     environment:
-          COLISSITHON_IP: 192.168.0.31
+          COLISSITHON_IP: "${ipcolissithon}"
           COLISSITHON_PORT: 9876
           HOUSTHON_PORT: 8090
-          KAFKA_IP: 192.168.0.31
+          KAFKA_IP: "${ipkafka}"
           KAFKA_PORT: 8092
           TOPIC_TWITTHON: housToTwit
           TOPIC_TRAVELTHON: housToTravel
@@ -18,5 +18,5 @@ services:
           PATH_TWEET: /app/samples/tweets
           PATH_PICTURES: /app/samples/pictures
     ports:
-    - "8090:8090"
+       - "8090:8090"
 
