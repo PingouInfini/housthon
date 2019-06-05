@@ -1,6 +1,7 @@
 version: '3'
 services:
   housthon:
+    image: reachhubcorp/housthon:latest
     container_name: housthon
     build:
       context: ./context/
