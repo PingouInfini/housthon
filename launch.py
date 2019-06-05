@@ -23,16 +23,16 @@ pictures_directory = os.environ['PATH_PICTURES']
 topic_housTOcompara = os.environ['TOPIC_COMPARATHON']
 
 # pour tester sur poste de dev
-# housthon_port=8090
-# colissithon_url_port="http://192.168.0.13:9876"
-# kafka_endpoint =  "192.168.0.13:8092"
-# comparathon_in="comparathon_in"
-# tweethon_in="tweethon_in"
-# googlethon_in="googlethon_in"
-# travelthon_in="travelthon_in"
-# topic_housTOcompara ="housToCompara"
-# tweet_directory = "samples/tweets"
-# pictures_directory = "samples/pictures"
+#housthon_port=8090
+#colissithon_url_port="http://192.168.0.31:9876"
+#kafka_endpoint =  "192.168.0.31:8092"
+#topic_housTOcompara="housToCompara"
+#tweethon_in="housToTwit"
+#googlethon_in="housToGoogle"
+#travelthon_in="housToTravel"
+#topic_housTOcompara ="housToCompara"
+#tweet_directory = "samples/tweets"
+#pictures_directory = "samples/pictures"
 
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
@@ -100,7 +100,14 @@ def process_94A():
     voyages_in_travelthon(voyage_conjoint_json, idbio_conjoint, travelthon_in, producer)
 
     # envoi de la bio dans googlethon
-    producers.fill_googlethon_kafka(nomfamille, prenom, idbio, googlethon_in, producer)
+    producers.fill_mini_bio_kafka(nomfamille, prenom, idbio, googlethon_in, producer)
+    # envoi de la bio dans twitthon
+    producers.fill_mini_bio_kafka(nomfamille, prenom, idbio, tweethon_in, producer)
+    producers.fill_mini_bio_kafka(nom_famille_pere, prenom_pere, idbio_pere, tweethon_in, producer)
+    producers.fill_mini_bio_kafka(nom_famille_mere, prenom_mere, idbio_mere, tweethon_in, producer)
+    producers.fill_mini_bio_kafka(nom_famille_conjoint, prenom_conjoint, idbio_conjoint, tweethon_in, producer)
+    producers.fill_mini_bio_kafka(nom_famille_pere_conjoint, prenom_pere_conjoint, idbio_pere_conjoint, tweethon_in, producer)
+    producers.fill_mini_bio_kafka(nom_famille_mere_conjoint, prenom_mere_conjoint, idbio_mere_conjoint, tweethon_in, producer)
 
     # envoi dans housTOcompara pour récupération des images
     producers.fill_housTOcompara(nomfamille, prenom, image, extension, idbio, producer, topic_housTOcompara)
