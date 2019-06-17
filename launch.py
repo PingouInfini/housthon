@@ -52,6 +52,11 @@ def process_94A():
 
     # recuperation des champs du json
     nomfamille = habilitation_json['94A']['nom de famille']
+    try:
+        comptetwitter=habilitation_json['94A']['compte twitter']
+    except Exception as e:
+        comptetwitter=None
+
     prenom = habilitation_json['94A']['prenom'][0]
     image = habilitation_json['94A']['photo']
     typeimage = "image/jpeg"
@@ -102,7 +107,11 @@ def process_94A():
     # envoi de la bio dans googlethon
     producers.fill_mini_bio_kafka(nomfamille, prenom, idbio, googlethon_in, producer)
     # envoi de la bio dans twitthon
-    producers.fill_mini_bio_kafka(nomfamille, prenom, idbio, tweethon_in, producer)
+    if comptetwitter is not None:
+        producers.fill_mini_bio_kafka("",comptetwitter, idbio, tweethon_in, producer)
+    else:
+        producers.fill_mini_bio_kafka(nomfamille, prenom, idbio, tweethon_in, producer)
+
     producers.fill_mini_bio_kafka(nom_famille_pere, prenom_pere, idbio_pere, tweethon_in, producer)
     producers.fill_mini_bio_kafka(nom_famille_mere, prenom_mere, idbio_mere, tweethon_in, producer)
     producers.fill_mini_bio_kafka(nom_famille_conjoint, prenom_conjoint, idbio_conjoint, tweethon_in, producer)
@@ -123,4 +132,4 @@ def voyages_in_travelthon(voyage_json, idbio, travelthon_in, producer):
 
 
 if __name__ == '__main__':
-    app.run(host=ip, port=housthon_port)
+    app.run(host='0.0.0.0', port=housthon_port)

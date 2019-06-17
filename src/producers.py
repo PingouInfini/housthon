@@ -1,4 +1,4 @@
-def fill_mini_bio_kafka(prenom, nomfamille, idBio, topic, producer):
+def fill_mini_bio_kafka(nomfamille, prenom, idBio, topic, producer):
     json_minibio = {
         "idBio": idBio,
         "nom": nomfamille,
