@@ -10,7 +10,8 @@ def fill_mini_bio_extension_kafka(nomfamille, prenom, idBio, extension, topic, p
     json_minibio = {
         "idBio": idBio,
         "nom": nomfamille,
-        "prenom": prenom
+        "prenom": prenom,
+        "extension": extension
     }
     producer.send(topic, value=(json_minibio))
 
