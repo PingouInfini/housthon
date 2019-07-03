@@ -7,32 +7,35 @@ from json import dumps
 from flask import Flask
 from flask import request
 from kafka import KafkaProducer
+import base64
+from ftplib import FTP
+import logging
 
 # pour creer service REST
 app = Flask(__name__)
 
 # pour recupere variable d'env du yml
-housthon_port = os.environ['HOUSTHON_PORT']
-colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
-kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
-tweethon_in = str(os.environ['TOPIC_TWITTHON'])
-googlethon_in = os.environ['TOPIC_GOOGLETHON']
-travelthon_in = os.environ['TOPIC_TRAVELTHON']
-tweet_directory = os.environ['PATH_TWEET']
-pictures_directory = os.environ['PATH_PICTURES']
-topic_housTOcompara = os.environ['TOPIC_COMPARATHON']
+# housthon_port = os.environ['HOUSTHON_PORT']
+# colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
+# kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
+# tweethon_in = str(os.environ['TOPIC_TWITTHON'])
+# googlethon_in = os.environ['TOPIC_GOOGLETHON']
+# travelthon_in = os.environ['TOPIC_TRAVELTHON']
+# tweet_directory = os.environ['PATH_TWEET']
+# pictures_directory = os.environ['PATH_PICTURES']
+# topic_housTOcompara = os.environ['TOPIC_COMPARATHON']
 
 # pour tester sur poste de dev
-#housthon_port=8090
-#colissithon_url_port="http://192.168.0.31:9876"
-#kafka_endpoint =  "192.168.0.31:8092"
-#topic_housTOcompara="housToCompara"
-#tweethon_in="housToTwit"
-#googlethon_in="housToGoogle"
-#travelthon_in="housToTravel"
-#topic_housTOcompara ="housToCompara"
-#tweet_directory = "samples/tweets"
-#pictures_directory = "samples/pictures"
+housthon_port=8090
+colissithon_url_port="http://192.168.0.4:9876"
+kafka_endpoint =  "192.168.0.4:8092"
+topic_housTOcompara="housToCompara"
+tweethon_in="housToTwit"
+googlethon_in="housToGoogle"
+travelthon_in="housToTravel"
+topic_housTOcompara ="housToCompara"
+tweet_directory = "samples/tweets"
+pictures_directory = "samples/pictures"
 
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
@@ -44,6 +47,8 @@ print("colissithon_url_port " + colissithon_url_port)
 print("ip container " + str(ip))
 print("Tweet Path: " + str(tweet_directory))
 print("Tweet Pictures: " + str(pictures_directory))
+
+
 
 
 @app.route('/start_process94A', methods=['POST'])
@@ -105,7 +110,8 @@ def process_94A():
     voyages_in_travelthon(voyage_conjoint_json, idbio_conjoint, travelthon_in, producer)
 
     # envoi de la bio dans googlethon
-    producers.fill_mini_bio_kafka(nomfamille, prenom, idbio, googlethon_in, producer)
+    producers.fill_mini_bio_extension_kafka(nomfamille, prenom, idbio, extension, googlethon_in, producer)
+
     # envoi de la bio dans twitthon
     if comptetwitter is not None:
         producers.fill_mini_bio_kafka("",comptetwitter, idbio, tweethon_in, producer)
@@ -121,6 +127,20 @@ def process_94A():
     # envoi dans housTOcompara pour récupération des images
     producers.fill_housTOcompara(nomfamille, prenom, image, extension, idbio, producer, topic_housTOcompara)
 
+    ### FTP
+
+    ftp = FTP("192.168.0.4")
+    ftp.login("test", "test")
+    type = ".*\.jpg$"
+    crawled_dir = ftp.pwd()
+    crdir("processedData", ftp)
+    coucou = os.path.dirname(os.path.realpath(__file__))
+    if not os.path.isdir(coucou+"/img_94A"):
+        os.mkdir(coucou+"/img_94A")
+    os.chdir(coucou+"/img_94A")
+
+    base64toFTP(ftp, image, idbio, extension)
+
     return idbio
 
 
@@ -129,6 +149,46 @@ def voyages_in_travelthon(voyage_json, idbio, travelthon_in, producer):
     for i in range(len(voyage_json)):
         destination = voyage_json[i]['pays']
         producers.fill_travelthon_kafka(destination, idbio, travelthon_in, producer)
+
+def base64toFTP(ftp, img_data, idBio, extension):
+    img_name = idBio+"."+extension
+    with open(img_name, "wb") as fh:
+        fh.write(base64.b64decode(img_data))
+        logging.info("Sauvegarde de l'image de référence du candidat dans le filesystem ")
+    file = open(img_name,'rb')
+    ftp.storbinary('STOR '+img_name, file)
+    file.close()
+
+
+
+"""
+Tests if the source directory doesn't contain a json or an image (except processedData directory)
+"""
+def isSourceDirectoryEmpty(ftp):
+    filelist = []
+    ftp.retrlines('LIST', filelist.append)
+    return len(filelist) == 1
+
+"""
+Tests if the given directory exists 
+"""
+def directory_exists(directory, ftp):
+    filelist = []
+    ftp.retrlines('LIST', filelist.append)
+    for f in filelist:
+        if f.split()[-1] == directory and f.upper().startswith('D'):
+            return True
+    return False
+
+"""
+Create a given directory
+"""
+def crdir(dir, ftp):
+    if len(dir.rsplit("/", 1)) == 2:
+        ftp.cwd(dir.rsplit("/", 1)[0])
+        dir = dir.rsplit("/", 1)[1]
+    if directory_exists(dir, ftp) is False:  # (or negate, whatever you prefer for readability)
+        ftp.mkd(dir)
 
 
 if __name__ == '__main__':
