@@ -15,27 +15,26 @@ import logging
 app = Flask(__name__)
 
 # pour recupere variable d'env du yml
-# housthon_port = os.environ['HOUSTHON_PORT']
-# colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
-# kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
-# tweethon_in = str(os.environ['TOPIC_TWITTHON'])
-# googlethon_in = os.environ['TOPIC_GOOGLETHON']
-# travelthon_in = os.environ['TOPIC_TRAVELTHON']
-# tweet_directory = os.environ['PATH_TWEET']
-# pictures_directory = os.environ['PATH_PICTURES']
-# topic_housTOcompara = os.environ['TOPIC_COMPARATHON']
+housthon_port = os.environ['HOUSTHON_PORT']
+colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
+kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
+tweethon_in = str(os.environ['TOPIC_TWITTHON'])
+googlethon_in = os.environ['TOPIC_GOOGLETHON']
+travelthon_in = os.environ['TOPIC_TRAVELTHON']
+tweet_directory = os.environ['PATH_TWEET']
+pictures_directory = os.environ['PATH_PICTURES']
+topic_housTOcompara = os.environ['TOPIC_COMPARATHON']
 
 # pour tester sur poste de dev
-housthon_port=8090
-colissithon_url_port="http://192.168.0.4:9876"
-kafka_endpoint =  "192.168.0.4:8092"
-topic_housTOcompara="housToCompara"
-tweethon_in="housToTwit"
-googlethon_in="housToGoogle"
-travelthon_in="housToTravel"
-topic_housTOcompara ="housToCompara"
-tweet_directory = "samples/tweets"
-pictures_directory = "samples/pictures"
+# housthon_port=8090
+# colissithon_url_port="http://192.168.0.4:9876"
+# kafka_endpoint =  "192.168.0.4:8092"
+# topic_housTOcompara="housToCompara"
+# tweethon_in="housToTwit"
+# googlethon_in="housToGoogle"
+# travelthon_in="housToTravel"
+# tweet_directory = "samples/tweets"
+# pictures_directory = "samples/pictures"
 
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
@@ -131,13 +130,11 @@ def process_94A():
 
     ftp = FTP("192.168.0.4")
     ftp.login("test", "test")
-    type = ".*\.jpg$"
-    crawled_dir = ftp.pwd()
     crdir("processedData", ftp)
-    coucou = os.path.dirname(os.path.realpath(__file__))
-    if not os.path.isdir(coucou+"/img_94A"):
-        os.mkdir(coucou+"/img_94A")
-    os.chdir(coucou+"/img_94A")
+    realpath = os.path.dirname(os.path.realpath(__file__))
+    if not os.path.isdir(realpath+"/img_94A"):
+        os.mkdir(realpath+"/img_94A")
+    os.chdir(realpath+"/img_94A")
 
     base64toFTP(ftp, image, idbio, extension)
 
