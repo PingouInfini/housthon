@@ -15,6 +15,11 @@ services:
           TOPIC_TRAVELTHON: housToTravel
           TOPIC_GOOGLETHON: housToGoogle
           TOPIC_COMPARATHON: housToCompara
+          FTP_IP: "${ftpip}"
+          FTP_PORT: 21
+          FTP_ID: "${ftpid}"
+          FTP_PASSWORD: "${ftppassword}"
+          FTP_PATH: "${ftppath}"
           PATH_TWEET: /app/samples/tweets
           PATH_PICTURES: /app/samples/pictures
     ports:

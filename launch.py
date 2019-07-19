@@ -15,26 +15,26 @@ import logging
 app = Flask(__name__)
 
 # pour recupere variable d'env du yml
-housthon_port = os.environ['HOUSTHON_PORT']
-colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
-kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
-tweethon_in = str(os.environ['TOPIC_TWITTHON'])
-googlethon_in = os.environ['TOPIC_GOOGLETHON']
-travelthon_in = os.environ['TOPIC_TRAVELTHON']
-tweet_directory = os.environ['PATH_TWEET']
-pictures_directory = os.environ['PATH_PICTURES']
-topic_housTOcompara = os.environ['TOPIC_COMPARATHON']
+# housthon_port = os.environ['HOUSTHON_PORT']
+# colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
+# kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
+# tweethon_in = str(os.environ['TOPIC_TWITTHON'])
+# googlethon_in = os.environ['TOPIC_GOOGLETHON']
+# travelthon_in = os.environ['TOPIC_TRAVELTHON']
+# tweet_directory = os.environ['PATH_TWEET']
+# pictures_directory = os.environ['PATH_PICTURES']
+# topic_housTOcompara = os.environ['TOPIC_COMPARATHON']
 
 # pour tester sur poste de dev
-# housthon_port=8090
-# colissithon_url_port="http://192.168.0.4:9876"
-# kafka_endpoint =  "192.168.0.4:8092"
-# topic_housTOcompara="housToCompara"
-# tweethon_in="housToTwit"
-# googlethon_in="housToGoogle"
-# travelthon_in="housToTravel"
-# tweet_directory = "samples/tweets"
-# pictures_directory = "samples/pictures"
+housthon_port = 8090
+colissithon_url_port = "http://192.168.0.10:9876"
+kafka_endpoint =  "192.168.0.10:8092"
+topic_housTOcompara = "housToCompara"
+tweethon_in = "housToTwit"
+googlethon_in = "housToGoogle"
+travelthon_in = "housToTravel"
+tweet_directory = "samples/tweets"
+pictures_directory = "samples/pictures"
 
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
@@ -46,8 +46,6 @@ print("colissithon_url_port " + colissithon_url_port)
 print("ip container " + str(ip))
 print("Tweet Path: " + str(tweet_directory))
 print("Tweet Pictures: " + str(pictures_directory))
-
-
 
 
 @app.route('/start_process94A', methods=['POST'])
@@ -76,12 +74,15 @@ def process_94A():
     nom_famille_mere_conjoint = habilitation_json['94A']['Conjoint']['Mere']['nom']
     prenom_mere_conjoint = habilitation_json['94A']['Conjoint']['Mere']['prenom'][0]
 
+
+
     # recuperation des voyages
     voyage_json = habilitation_json['94A']['Voyages depuis 5 ans']
     voyage_conjoint_json = habilitation_json['94A']['Conjoint']['Voyages depuis 5 ans']
 
     # creation du candidat
     idbio = services.create_bio_minibio(prenom, nomfamille, image, typeimage, colissithon_url_port)
+
     # idbio="1234567890"
     # creation du pere
     idbio_pere = services.create_bio_minibio(prenom_pere, nom_famille_pere, None, None, colissithon_url_port)
@@ -109,11 +110,11 @@ def process_94A():
     voyages_in_travelthon(voyage_conjoint_json, idbio_conjoint, travelthon_in, producer)
 
     # envoi de la bio dans googlethon
-    producers.fill_mini_bio_extension_kafka(nomfamille, prenom, idbio, extension, googlethon_in, producer)
+    producers.fill_googlethon_kafka(nomfamille, prenom, idbio, googlethon_in, producer)
 
     # envoi de la bio dans twitthon
     if comptetwitter is not None:
-        producers.fill_mini_bio_kafka("",comptetwitter, idbio, tweethon_in, producer)
+        producers.fill_mini_bio_kafka("", comptetwitter, idbio, tweethon_in, producer)
     else:
         producers.fill_mini_bio_kafka(nomfamille, prenom, idbio, tweethon_in, producer)
 
@@ -128,8 +129,12 @@ def process_94A():
 
     ### FTP
 
-    ftp = FTP("192.168.0.4")
-    ftp.login("test", "test")
+    # ftp = FTP(os.environ['FTP_ADDR'])
+    # ftp.login(os.environ['FTP_ID'], os.environ['FTP_PASSWORD'])
+    # ftp.cwd(os.environ['FTP_PATH'])
+    ftp = FTP("192.168.0.10")
+    ftp.login("nimir", "@soleil1")
+    ftp.cwd("dev/ftp")
     crdir("processedData", ftp)
     realpath = os.path.dirname(os.path.realpath(__file__))
     if not os.path.isdir(realpath+"/img_94A"):
@@ -146,6 +151,7 @@ def voyages_in_travelthon(voyage_json, idbio, travelthon_in, producer):
     for i in range(len(voyage_json)):
         destination = voyage_json[i]['pays']
         producers.fill_travelthon_kafka(destination, idbio, travelthon_in, producer)
+
 
 def base64toFTP(ftp, img_data, idBio, extension):
     img_name = idBio+"."+extension

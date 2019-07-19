@@ -6,14 +6,15 @@ def fill_mini_bio_kafka(nomfamille, prenom, idBio, topic, producer):
     }
     producer.send(topic, value=(json_minibio))
 
-def fill_mini_bio_extension_kafka(nomfamille, prenom, idBio, extension, topic, producer):
+
+def fill_googlethon_kafka(nomfamille, prenom, idBio, topic, producer):
     json_minibio = {
         "idBio": idBio,
         "nom": nomfamille,
         "prenom": prenom,
-        "extension": extension
     }
     producer.send(topic, value=(json_minibio))
+
 
 def fill_travelthon_kafka(destination, idBio, topic, producer):
     json_togo = {
