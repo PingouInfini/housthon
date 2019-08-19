@@ -10,6 +10,8 @@ from kafka import KafkaProducer
 import base64
 from ftplib import FTP
 import logging
+from io import BytesIO
+import re
 
 # pour creer service REST
 app = Flask(__name__)
@@ -27,8 +29,8 @@ app = Flask(__name__)
 
 # pour tester sur poste de dev
 housthon_port = 8090
-colissithon_url_port = "http://192.168.0.10:9876"
-kafka_endpoint =  "192.168.0.10:8092"
+colissithon_url_port = "http://192.168.0.9:9876"
+kafka_endpoint = "192.168.0.9:8092"
 topic_housTOcompara = "housToCompara"
 tweethon_in = "housToTwit"
 googlethon_in = "housToGoogle"
@@ -55,9 +57,9 @@ def process_94A():
     # recuperation des champs du json
     nomfamille = habilitation_json['94A']['nom de famille']
     try:
-        comptetwitter=habilitation_json['94A']['compte twitter']
+        comptetwitter = habilitation_json['94A']['compte twitter']
     except Exception as e:
-        comptetwitter=None
+        comptetwitter = None
 
     prenom = habilitation_json['94A']['prenom'][0]
     image = habilitation_json['94A']['photo']
@@ -73,8 +75,6 @@ def process_94A():
     prenom_pere_conjoint = habilitation_json['94A']['Conjoint']['Pere']['prenom'][0]
     nom_famille_mere_conjoint = habilitation_json['94A']['Conjoint']['Mere']['nom']
     prenom_mere_conjoint = habilitation_json['94A']['Conjoint']['Mere']['prenom'][0]
-
-
 
     # recuperation des voyages
     voyage_json = habilitation_json['94A']['Voyages depuis 5 ans']
@@ -112,36 +112,39 @@ def process_94A():
     # envoi de la bio dans googlethon
     producers.fill_googlethon_kafka(nomfamille, prenom, idbio, googlethon_in, producer)
 
-    # envoi de la bio dans twitthon
-    if comptetwitter is not None:
-        producers.fill_mini_bio_kafka("", comptetwitter, idbio, tweethon_in, producer)
-    else:
-        producers.fill_mini_bio_kafka(nomfamille, prenom, idbio, tweethon_in, producer)
-
-    producers.fill_mini_bio_kafka(nom_famille_pere, prenom_pere, idbio_pere, tweethon_in, producer)
-    producers.fill_mini_bio_kafka(nom_famille_mere, prenom_mere, idbio_mere, tweethon_in, producer)
-    producers.fill_mini_bio_kafka(nom_famille_conjoint, prenom_conjoint, idbio_conjoint, tweethon_in, producer)
-    producers.fill_mini_bio_kafka(nom_famille_pere_conjoint, prenom_pere_conjoint, idbio_pere_conjoint, tweethon_in, producer)
-    producers.fill_mini_bio_kafka(nom_famille_mere_conjoint, prenom_mere_conjoint, idbio_mere_conjoint, tweethon_in, producer)
-
-    # envoi dans housTOcompara pour récupération des images
-    producers.fill_housTOcompara(nomfamille, prenom, image, extension, idbio, producer, topic_housTOcompara)
+    # # envoi de la bio dans twitthon
+    # if comptetwitter is not None:
+    #     producers.fill_mini_bio_kafka("", comptetwitter, idbio, tweethon_in, producer)
+    # else:
+    #     producers.fill_mini_bio_kafka(nomfamille, prenom, idbio, tweethon_in, producer)
+    #
+    # producers.fill_mini_bio_kafka(nom_famille_pere, prenom_pere, idbio_pere, tweethon_in, producer)
+    # producers.fill_mini_bio_kafka(nom_famille_mere, prenom_mere, idbio_mere, tweethon_in, producer)
+    # producers.fill_mini_bio_kafka(nom_famille_conjoint, prenom_conjoint, idbio_conjoint, tweethon_in, producer)
+    # producers.fill_mini_bio_kafka(nom_famille_pere_conjoint, prenom_pere_conjoint, idbio_pere_conjoint, tweethon_in, producer)
+    # producers.fill_mini_bio_kafka(nom_famille_mere_conjoint, prenom_mere_conjoint, idbio_mere_conjoint, tweethon_in, producer)
+    #
+    # # envoi dans housTOcompara pour récupération des images
+    # producers.fill_housTOcompara(nomfamille, prenom, image, extension, idbio, producer, topic_housTOcompara)
 
     ### FTP
 
     # ftp = FTP(os.environ['FTP_ADDR'])
     # ftp.login(os.environ['FTP_ID'], os.environ['FTP_PASSWORD'])
     # ftp.cwd(os.environ['FTP_PATH'])
-    ftp = FTP("192.168.0.10")
+    ftp = FTP("192.168.0.9")
     ftp.login("nimir", "@soleil1")
     ftp.cwd("dev/ftp")
     crdir("processedData", ftp)
-    realpath = os.path.dirname(os.path.realpath(__file__))
-    if not os.path.isdir(realpath+"/img_94A"):
-        os.mkdir(realpath+"/img_94A")
-    os.chdir(realpath+"/img_94A")
+
+    # stockage en local container
+    # realpath = os.path.dirname(os.path.realpath(__file__))
+    # if not os.path.isdir(realpath+"/img_94A"):
+    #     os.mkdir(realpath+"/img_94A")
+    # os.chdir(realpath+"/img_94A")
 
     base64toFTP(ftp, image, idbio, extension)
+    ftp.close()
 
     return idbio
 
@@ -154,27 +157,28 @@ def voyages_in_travelthon(voyage_json, idbio, travelthon_in, producer):
 
 
 def base64toFTP(ftp, img_data, idBio, extension):
-    img_name = idBio+"."+extension
-    with open(img_name, "wb") as fh:
-        fh.write(base64.b64decode(img_data))
-        logging.info("Sauvegarde de l'image de référence du candidat dans le filesystem ")
-    file = open(img_name,'rb')
-    ftp.storbinary('STOR '+img_name, file)
-    file.close()
-
+    img_name = idBio + "." + extension
+    img_94a_bytes_io = BytesIO(base64.b64decode(re.sub("data:image/jpeg;base64", '', img_data)))
+    logging.info("Envoi de l'image de référence du candidat dans le ftp ")
+    ftp.storbinary('STOR ' + img_name, img_94a_bytes_io, 1024)
 
 
 """
 Tests if the source directory doesn't contain a json or an image (except processedData directory)
 """
+
+
 def isSourceDirectoryEmpty(ftp):
     filelist = []
     ftp.retrlines('LIST', filelist.append)
     return len(filelist) == 1
 
+
 """
 Tests if the given directory exists 
 """
+
+
 def directory_exists(directory, ftp):
     filelist = []
     ftp.retrlines('LIST', filelist.append)
@@ -183,9 +187,12 @@ def directory_exists(directory, ftp):
             return True
     return False
 
+
 """
 Create a given directory
 """
+
+
 def crdir(dir, ftp):
     if len(dir.rsplit("/", 1)) == 2:
         ftp.cwd(dir.rsplit("/", 1)[0])
