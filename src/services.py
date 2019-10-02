@@ -1,24 +1,24 @@
-import requests
 import logging
-import json
+
+import requests
 
 
 def create_bio_minibio(prenom, nomfamille, image, typeimage, url_collissithon):
     # creation des json pour create bio
-    if image is not None :
+    if image is not None:
         bio = {
             "biographicsFirstName": prenom,
             "biographicsName": nomfamille,
             "biographicsImageContentType": typeimage,
             "biographicsImage": image
         }
-        createbio_url=url_collissithon+"/create_bio"
+        createbio_url = url_collissithon + "/create_bio"
     else:
         bio = {
             "biographicsFirstName": prenom,
             "biographicsName": nomfamille
         }
-        createbio_url=url_collissithon+"/create_minibio"
+        createbio_url = url_collissithon + "/create_minibio"
     target_id = create_bio_colissithon(bio, createbio_url)
     return target_id
 
@@ -43,11 +43,11 @@ def create_bio_colissithon(bio_json, url):
 def bind_bio_colissithon(id_bio_candidat, id_bio_tobind, colissithon_url_port):
     session = requests.Session()
     # json avec les deux id a lier
-    twoBioIdsJson= {
+    twoBioIdsJson = {
         "candidateBioId": id_bio_candidat,
         "relationBioId": id_bio_tobind
     }
-    url = colissithon_url_port+"/bind_bio"
+    url = colissithon_url_port + "/bind_bio"
     current_header = {'Accept': 'application/json',
                       'Content-type': 'application/json'}
     post_response = session.post(url=url, json=twoBioIdsJson, headers=current_header)

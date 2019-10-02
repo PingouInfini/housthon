@@ -1,17 +1,17 @@
-import requests
-import os
+import base64
+import logging
+import re
 import socket
-import src.services as services
-import src.producers as producers
+from ftplib import FTP
+from io import BytesIO
 from json import dumps
+
 from flask import Flask
 from flask import request
 from kafka import KafkaProducer
-import base64
-from ftplib import FTP
-import logging
-from io import BytesIO
-import re
+
+import src.producers as producers
+import src.services as services
 
 # pour creer service REST
 app = Flask(__name__)
