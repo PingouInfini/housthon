@@ -1,26 +1,22 @@
 version: '3'
 services:
   housthon:
-    image: reachhubcorp/housthon:latest
+    # image: reachhubcorp/housthon:latest
     container_name: housthon
     build:
       context: ./context/
     environment:
+          HOUSTHON_PORT: 8090
           COLISSITHON_IP: "${ipcolissithon}"
           COLISSITHON_PORT: 9876
-          HOUSTHON_PORT: 8090
           KAFKA_IP: "${ipkafka}"
           KAFKA_PORT: 8092
-          TOPIC_TWITTHON: housToTwit
-          TOPIC_TRAVELTHON: housToTravel
           TOPIC_GOOGLETHON: housToGoogle
-          TOPIC_COMPARATHON: housToCompara
           FTP_IP: "${ftpip}"
           FTP_PORT: 21
-          FTP_ID: "${ftpid}"
-          FTP_PASSWORD: "${ftppassword}"
-          FTP_PATH: "${ftppath}"
-          PATH_TWEET: /app/samples/tweets
+          FTP_ID: ${ftpid}
+          FTP_PASSWORD: ${ftppassword}
+          FTP_PATH: ${ftppath}
           PATH_PICTURES: /app/samples/pictures
     ports:
        - "8090:8090"

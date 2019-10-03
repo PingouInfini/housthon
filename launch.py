@@ -6,6 +6,7 @@ from ftplib import FTP
 from io import BytesIO
 from json import dumps
 
+import os
 from flask import Flask
 from flask import request
 from kafka import KafkaProducer
@@ -16,27 +17,19 @@ import src.services as services
 # pour creer service REST
 app = Flask(__name__)
 
-# pour recupere variable d'env du yml
-# housthon_port = os.environ['HOUSTHON_PORT']
-# colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
-# kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
-# tweethon_in = str(os.environ['TOPIC_TWITTHON'])
-# googlethon_in = os.environ['TOPIC_GOOGLETHON']
-# travelthon_in = os.environ['TOPIC_TRAVELTHON']
-# tweet_directory = os.environ['PATH_TWEET']
-# pictures_directory = os.environ['PATH_PICTURES']
-# topic_housTOcompara = os.environ['TOPIC_COMPARATHON']
+## pour recupere variable d'env du yml (Docker)
+housthon_port = os.environ['HOUSTHON_PORT']
+colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
+kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
+googlethon_in = os.environ['TOPIC_GOOGLETHON']
+pictures_directory = os.environ['PATH_PICTURES']
 
-# pour tester sur poste de dev
-housthon_port = 8090
-colissithon_url_port = "http://192.168.0.9:9876"
-kafka_endpoint = "192.168.0.9:8092"
-topic_housTOcompara = "housToCompara"
-tweethon_in = "housToTwit"
-googlethon_in = "housToGoogle"
-travelthon_in = "housToTravel"
-tweet_directory = "samples/tweets"
-pictures_directory = "samples/pictures"
+## pour tester sur poste de dev
+# housthon_port = 8090
+# colissithon_url_port = "http://192.168.0.9:9876"
+# kafka_endpoint = "192.168.0.9:8092"
+# googlethon_in = "housToGoogle"
+# pictures_directory = "samples/pictures"
 
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
@@ -46,9 +39,6 @@ producer = KafkaProducer(bootstrap_servers=[kafka_endpoint], value_serializer=la
 print("housthon_port " + str(housthon_port))
 print("colissithon_url_port " + colissithon_url_port)
 print("ip container " + str(ip))
-print("Tweet Path: " + str(tweet_directory))
-print("Tweet Pictures: " + str(pictures_directory))
-
 
 @app.route('/start_process94A', methods=['POST'])
 def process_94A():
@@ -106,8 +96,8 @@ def process_94A():
     services.bind_bio_colissithon(idbio, idbio_mere_conjoint, colissithon_url_port)
 
     # parcours des destinations pour les envoyer dans file kafka travelthon
-    voyages_in_travelthon(voyage_json, idbio, travelthon_in, producer)
-    voyages_in_travelthon(voyage_conjoint_json, idbio_conjoint, travelthon_in, producer)
+    # voyages_in_travelthon(voyage_json, idbio, travelthon_in, producer)
+    # voyages_in_travelthon(voyage_conjoint_json, idbio_conjoint, travelthon_in, producer)
 
     # envoi de la bio dans googlethon
     producers.fill_googlethon_kafka(nomfamille, prenom, idbio, googlethon_in, producer)
@@ -127,21 +117,16 @@ def process_94A():
     # # envoi dans housTOcompara pour récupération des images
     # producers.fill_housTOcompara(nomfamille, prenom, image, extension, idbio, producer, topic_housTOcompara)
 
-    ### FTP
+    # # # FTP
+    ftp = FTP(os.environ['FTP_IP'])
+    ftp.login(str(os.environ['FTP_ID']).replace("\"", ""), str(os.environ['FTP_PASSWORD']).replace("\"", ""))
+    ftp.cwd(str(os.environ['FTP_PATH']).replace("\"", ""))
 
-    # ftp = FTP(os.environ['FTP_ADDR'])
-    # ftp.login(os.environ['FTP_ID'], os.environ['FTP_PASSWORD'])
-    # ftp.cwd(os.environ['FTP_PATH'])
-    ftp = FTP("192.168.0.9")
-    ftp.login("nimir", "@soleil1")
-    ftp.cwd("dev/ftp")
+    # ftp = FTP("192.168.0.9")
+    # ftp.login("nimir", "@soleil1")
+    # ftp.cwd("dev/ftp")
+
     crdir("processedData", ftp)
-
-    # stockage en local container
-    # realpath = os.path.dirname(os.path.realpath(__file__))
-    # if not os.path.isdir(realpath+"/img_94A"):
-    #     os.mkdir(realpath+"/img_94A")
-    # os.chdir(realpath+"/img_94A")
 
     base64toFTP(ftp, image, idbio, extension)
     ftp.close()

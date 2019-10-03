@@ -20,6 +20,7 @@ RUN apt-get install -y python3-pip
 RUN apt-get install -y curl
 RUN apt-get install -y unzip
 RUN apt-get install -y vim
+RUN apt-get install -y iputils-ping
 
 RUN pip3 install --no-cache-dir -r /app/requirements.txt
 
