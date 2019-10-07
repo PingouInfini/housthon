@@ -9,7 +9,6 @@ from json import dumps
 
 from flask import Flask
 from flask import request
-from flask_cors import cross_origin
 from kafka import KafkaProducer
 
 import src.producers as producers
@@ -19,18 +18,18 @@ import src.services as services
 app = Flask(__name__)
 
 ## pour recupere variable d'env du yml (Docker)
-housthon_port = os.environ['HOUSTHON_PORT']
-colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
-kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
-googlethon_in = os.environ['TOPIC_GOOGLETHON']
-pictures_directory = os.environ['PATH_PICTURES']
+# housthon_port = os.environ['HOUSTHON_PORT']
+# colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
+# kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
+# googlethon_in = os.environ['TOPIC_GOOGLETHON']
+# pictures_directory = os.environ['PATH_PICTURES']
 
 ## pour tester sur poste de dev
-# housthon_port = 8090
-# colissithon_url_port = "http://192.168.0.9:9876"
-# kafka_endpoint = "192.168.0.9:8092"
-# googlethon_in = "housToGoogle"
-# pictures_directory = "samples/pictures"
+housthon_port = 8090
+colissithon_url_port = "http://192.168.0.9:9876"
+kafka_endpoint = "192.168.0.9:8092"
+googlethon_in = "housToGoogle"
+pictures_directory = "samples/pictures"
 
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
@@ -42,11 +41,25 @@ print("colissithon_url_port " + colissithon_url_port)
 print("ip container " + str(ip))
 
 
+@app.after_request
+def add_headers(response):
+    response.headers.add('Content-Type', 'application/json')
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Expose-Headers', 'Content-Type,Content-Length,Authorization,X-Pagination')
+    return response
+
+
 @app.route('/start_process94A', methods=['POST'])
-@cross_origin()
+
 def process_94A():
     habilitation_json = request.get_json()
 
+    # recuperation du l'id du dico pour le requeter et le récuperer
+    idDictionary = habilitation_json['idDictionary']
+    # recuperation du niveau de profondeur des recherches
+    depthLevel = habilitation_json['depthLevel']
     # recuperation des champs du json
     nomfamille = habilitation_json['94A']['nom de famille']
     try:
@@ -103,7 +116,7 @@ def process_94A():
     # voyages_in_travelthon(voyage_conjoint_json, idbio_conjoint, travelthon_in, producer)
 
     # envoi de la bio dans googlethon
-    producers.fill_googlethon_kafka(nomfamille, prenom, idbio, googlethon_in, producer)
+    producers.fill_googlethon_kafka(nomfamille, prenom, idbio, idDictionary, depthLevel, googlethon_in, producer)
 
     # # envoi de la bio dans twitthon
     # if comptetwitter is not None:
@@ -121,13 +134,13 @@ def process_94A():
     # producers.fill_housTOcompara(nomfamille, prenom, image, extension, idbio, producer, topic_housTOcompara)
 
     # # # FTP
-    ftp = FTP(os.environ['FTP_IP'])
-    ftp.login(str(os.environ['FTP_ID']).replace("\"", ""), str(os.environ['FTP_PASSWORD']).replace("\"", ""))
-    ftp.cwd(str(os.environ['FTP_PATH']).replace("\"", ""))
+    # ftp = FTP(os.environ['FTP_IP'])
+    # ftp.login(str(os.environ['FTP_ID']).replace("\"", ""), str(os.environ['FTP_PASSWORD']).replace("\"", ""))
+    # ftp.cwd(str(os.environ['FTP_PATH']).replace("\"", ""))
 
-    # ftp = FTP("192.168.0.9")
-    # ftp.login("nimir", "@soleil1")
-    # ftp.cwd("dev/ftp")
+    ftp = FTP("192.168.0.9")
+    ftp.login("nimir", "@soleil1")
+    ftp.cwd("dev/ftp")
 
     crdir("processedData", ftp)
 
