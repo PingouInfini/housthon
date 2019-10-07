@@ -19,18 +19,18 @@ import src.services as services
 app = Flask(__name__)
 
 ## pour recupere variable d'env du yml (Docker)
-housthon_port = os.environ['HOUSTHON_PORT']
-colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
-kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
-googlethon_in = os.environ['TOPIC_GOOGLETHON']
-pictures_directory = os.environ['PATH_PICTURES']
+# housthon_port = os.environ['HOUSTHON_PORT']
+# colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
+# kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
+# googlethon_in = os.environ['TOPIC_GOOGLETHON']
+# pictures_directory = os.environ['PATH_PICTURES']
 
 ## pour tester sur poste de dev
-# housthon_port = 8090
-# colissithon_url_port = "http://192.168.0.9:9876"
-# kafka_endpoint = "192.168.0.9:8092"
-# googlethon_in = "housToGoogle"
-# pictures_directory = "samples/pictures"
+housthon_port = 8090
+colissithon_url_port = "http://192.168.0.9:9876"
+kafka_endpoint = "192.168.0.9:8092"
+googlethon_in = "housToGoogle"
+pictures_directory = "samples/pictures"
 
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
@@ -40,6 +40,16 @@ producer = KafkaProducer(bootstrap_servers=[kafka_endpoint], value_serializer=la
 print("housthon_port " + str(housthon_port))
 print("colissithon_url_port " + colissithon_url_port)
 print("ip container " + str(ip))
+
+
+@app.after_request
+def add_headers(response):
+    response.headers.add('Content-Type', 'application/json')
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Expose-Headers', 'Content-Type,Content-Length,Authorization,X-Pagination')
+    return response
 
 
 @app.route('/start_process94A', methods=['POST'])
