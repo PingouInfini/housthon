@@ -1,14 +1,15 @@
 import base64
 import logging
+import os
 import re
 import socket
 from ftplib import FTP
 from io import BytesIO
 from json import dumps
 
-import os
 from flask import Flask
 from flask import request
+from flask_cors import cross_origin
 from kafka import KafkaProducer
 
 import src.producers as producers
@@ -40,7 +41,9 @@ print("housthon_port " + str(housthon_port))
 print("colissithon_url_port " + colissithon_url_port)
 print("ip container " + str(ip))
 
+
 @app.route('/start_process94A', methods=['POST'])
+@cross_origin()
 def process_94A():
     habilitation_json = request.get_json()
 
