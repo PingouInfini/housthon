@@ -158,7 +158,7 @@ def voyages_in_travelthon(voyage_json, idbio, travelthon_in, producer):
 
 
 def base64toFTP(ftp, img_data, idBio, extension):
-    img_name = idBio + "." + extension
+    img_name = str(idBio) + "." + extension
     img_94a_bytes_io = BytesIO(base64.b64decode(re.sub("data:image/jpeg;base64", '', img_data)))
     logging.info("Envoi de l'image de référence du candidat dans le ftp ")
     ftp.storbinary('STOR ' + img_name, img_94a_bytes_io, 1024)
