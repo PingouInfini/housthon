@@ -17,19 +17,19 @@ import src.services as services
 # pour creer service REST
 app = Flask(__name__)
 
-## pour recupere variable d'env du yml (Docker)
-# housthon_port = os.environ['HOUSTHON_PORT']
-# colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
-# kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
-# googlethon_in = os.environ['TOPIC_GOOGLETHON']
-# pictures_directory = os.environ['PATH_PICTURES']
+## pour recupere variable d'env du yml (Docker) ne pas oublier FTP plus bas
+housthon_port = os.environ['HOUSTHON_PORT']
+colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
+kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
+googlethon_in = os.environ['TOPIC_GOOGLETHON']
+pictures_directory = os.environ['PATH_PICTURES']
 
 ## pour tester sur poste de dev
-housthon_port = 8090
-colissithon_url_port = "http://192.168.0.9:9876"
-kafka_endpoint = "192.168.0.9:8092"
-googlethon_in = "housToGoogle"
-pictures_directory = "samples/pictures"
+# housthon_port = 8090
+# colissithon_url_port = "http://192.168.0.9:9876"
+# kafka_endpoint = "192.168.0.9:8092"
+# googlethon_in = "housToGoogle"
+# pictures_directory = "samples/pictures"
 
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
@@ -134,13 +134,13 @@ def process_94A():
     # producers.fill_housTOcompara(nomfamille, prenom, image, extension, idbio, producer, topic_housTOcompara)
 
     # # # FTP
-    # ftp = FTP(os.environ['FTP_IP'])
-    # ftp.login(str(os.environ['FTP_ID']).replace("\"", ""), str(os.environ['FTP_PASSWORD']).replace("\"", ""))
-    # ftp.cwd(str(os.environ['FTP_PATH']).replace("\"", ""))
+    ftp = FTP(os.environ['FTP_IP'])
+    ftp.login(str(os.environ['FTP_ID']).replace("\"", ""), str(os.environ['FTP_PASSWORD']).replace("\"", ""))
+    ftp.cwd(str(os.environ['FTP_PATH']).replace("\"", ""))
 
-    ftp = FTP("192.168.0.9")
-    ftp.login("nimir", "@soleil1")
-    ftp.cwd("dev/ftp")
+    # ftp = FTP("192.168.0.9")
+    # ftp.login("nimir", "@soleil1")
+    # ftp.cwd("dev/ftp")
 
     crdir("processedData", ftp)
 
