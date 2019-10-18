@@ -7,13 +7,14 @@ def fill_mini_bio_kafka(nomfamille, prenom, idBio, topic, producer):
     producer.send(topic, value=(json_minibio))
 
 
-def fill_googlethon_kafka(nomfamille, prenom, idBio, idDictionary, depthLevel, topic, producer):
+def fill_googlethon_kafka(nomfamille, prenom, idBio, idDictionary, depthLevel, numberUrl, topic, producer):
     json_minibio = {
         "idBio": idBio,
         "nom": nomfamille,
         "prenom": prenom,
         "idDictionary": idDictionary,
-        "depthLevel": depthLevel
+        "depthLevel": depthLevel,
+        "numberUrl": numberUrl
     }
     producer.send(topic, value=(json_minibio))
 

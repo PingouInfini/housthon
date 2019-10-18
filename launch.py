@@ -19,18 +19,26 @@ import src.services as services
 app = Flask(__name__)
 
 # ## pour recupere variable d'env du yml (Docker) ne pas oublier FTP plus bas
-# housthon_port = os.environ['HOUSTHON_PORT']
-# colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
-# kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
-# googlethon_in = os.environ['TOPIC_GOOGLETHON']
-# pictures_directory = os.environ['PATH_PICTURES']
+housthon_port = os.environ['HOUSTHON_PORT']
+colissithon_url_port = "http://" + str(os.environ['COLISSITHON_IP']) + ":" + str(os.environ['COLISSITHON_PORT'])
+kafka_endpoint = str(os.environ['KAFKA_IP']) + ":" + str(os.environ['KAFKA_PORT'])
+googlethon_in = os.environ['TOPIC_GOOGLETHON']
+pictures_directory = os.environ['PATH_PICTURES']
+ftp_ip = os.environ['FTP_IP']
+ftp_id = str(os.environ['FTP_ID']).replace("\"", "")
+ftp_password = str(os.environ['FTP_PASSWORD']).replace("\"", "")
+ftp_path = str(os.environ['FTP_PATH']).replace("\"", "")
 
 # pour tester sur poste de dev
-housthon_port = 8090
-colissithon_url_port = "http://192.168.0.9:9876"
-kafka_endpoint = "192.168.0.9:8092"
-googlethon_in = "housToGoogle"
-pictures_directory = "samples/pictures"
+# housthon_port = 8090
+# colissithon_url_port = "http://192.168.0.9:9876"
+# kafka_endpoint = "192.168.0.9:8092"
+# googlethon_in = "housToGoogle"
+# pictures_directory = "samples/pictures"
+# ftp_ip = "192.168.0.9"
+# ftp_id = "nimir"
+# ftp_password = "@soleil1"
+# ftp_path = "dev/ftp"
 
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
@@ -61,6 +69,8 @@ def process_94A():
     idDictionary = habilitation_json['idDictionary']
     # recuperation du niveau de profondeur des recherches
     depthLevel = habilitation_json['depthLevel']
+    # recuperation du nombre d'url à récupérer par googlethon par query
+    numberUrl = habilitation_json['numberUrl']
     # recuperation des champs du json
     nomfamille = habilitation_json['94A']['nom de famille']
     try:
@@ -117,7 +127,7 @@ def process_94A():
     # voyages_in_travelthon(voyage_conjoint_json, idbio_conjoint, travelthon_in, producer)
 
     # envoi de la bio dans googlethon
-    producers.fill_googlethon_kafka(nomfamille, prenom, idbio, idDictionary, depthLevel, googlethon_in, producer)
+    producers.fill_googlethon_kafka(nomfamille, prenom, idbio, idDictionary, depthLevel, numberUrl, googlethon_in, producer)
 
     # # envoi de la bio dans twitthon
     # if comptetwitter is not None:
@@ -135,13 +145,9 @@ def process_94A():
     # producers.fill_housTOcompara(nomfamille, prenom, image, extension, idbio, producer, topic_housTOcompara)
 
     # # # FTP
-    # ftp = FTP(os.environ['FTP_IP'])
-    # ftp.login(str(os.environ['FTP_ID']).replace("\"", ""), str(os.environ['FTP_PASSWORD']).replace("\"", ""))
-    # ftp.cwd(str(os.environ['FTP_PATH']).replace("\"", ""))
-
-    ftp = FTP("192.168.0.9")
-    ftp.login("nimir", "@soleil1")
-    ftp.cwd("dev/ftp")
+    ftp = FTP(ftp_ip)
+    ftp.login(ftp_id, ftp_password)
+    ftp.cwd(ftp_path)
 
     crdir("processedData", ftp)
 
@@ -152,7 +158,7 @@ def process_94A():
 
 
 def voyages_in_travelthon(voyage_json, idbio, travelthon_in, producer):
-    # parcour des destinations pour les envoyer dans file kafka travelthon
+    # parcours des destinations pour les envoyer dans file kafka travelthon
     for i in range(len(voyage_json)):
         destination = voyage_json[i]['pays']
         producers.fill_travelthon_kafka(destination, idbio, travelthon_in, producer)
