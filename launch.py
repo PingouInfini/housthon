@@ -86,16 +86,17 @@ def process_94A():
     prenom_pere = habilitation_json['94A']['Pere']['prenom'][0]
     nom_famille_mere = habilitation_json['94A']['Mere']['nom']
     prenom_mere = habilitation_json['94A']['Mere']['prenom'][0]
-    nom_famille_conjoint = habilitation_json['94A']['Conjoint']['nom de famille']
-    prenom_conjoint = habilitation_json['94A']['Conjoint']['prenom'][0]
-    nom_famille_pere_conjoint = habilitation_json['94A']['Conjoint']['Pere']['nom']
-    prenom_pere_conjoint = habilitation_json['94A']['Conjoint']['Pere']['prenom'][0]
-    nom_famille_mere_conjoint = habilitation_json['94A']['Conjoint']['Mere']['nom']
-    prenom_mere_conjoint = habilitation_json['94A']['Conjoint']['Mere']['prenom'][0]
+    if 'Conjoint' in habilitation_json['94A']:
+        nom_famille_conjoint = habilitation_json['94A']['Conjoint']['nom de famille']
+        prenom_conjoint = habilitation_json['94A']['Conjoint']['prenom'][0]
+        nom_famille_pere_conjoint = habilitation_json['94A']['Conjoint']['Pere']['nom']
+        prenom_pere_conjoint = habilitation_json['94A']['Conjoint']['Pere']['prenom'][0]
+        nom_famille_mere_conjoint = habilitation_json['94A']['Conjoint']['Mere']['nom']
+        prenom_mere_conjoint = habilitation_json['94A']['Conjoint']['Mere']['prenom'][0]
 
-    # recuperation des voyages
-    voyage_json = habilitation_json['94A']['Voyages depuis 5 ans']
-    voyage_conjoint_json = habilitation_json['94A']['Conjoint']['Voyages depuis 5 ans']
+    # # recuperation des voyages
+    # voyage_json = habilitation_json['94A']['Voyages depuis 5 ans']
+    # voyage_conjoint_json = habilitation_json['94A']['Conjoint']['Voyages depuis 5 ans']
 
     # creation du candidat
     idbio = services.create_bio_minibio(prenom, nomfamille, image, typeimage, colissithon_url_port)
