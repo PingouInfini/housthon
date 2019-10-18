@@ -110,18 +110,19 @@ def process_94A():
     idbio_mere = services.create_bio_minibio(prenom_mere, nom_famille_mere, None, None, colissithon_url_port)
     services.bind_bio_colissithon(idbio, idbio_mere, colissithon_url_port)
     # creation du conjoint
-    idbio_conjoint = services.create_bio_minibio(prenom_conjoint, nom_famille_conjoint, None, None,
-                                                 colissithon_url_port)
-    # idbio_conjoint="0987654321"
-    services.bind_bio_colissithon(idbio, idbio_conjoint, colissithon_url_port)
-    # creation du pere du conjoint
-    idbio_pere_conjoint = services.create_bio_minibio(prenom_pere_conjoint, nom_famille_pere_conjoint, None, None,
-                                                      colissithon_url_port)
-    services.bind_bio_colissithon(idbio, idbio_pere_conjoint, colissithon_url_port)
-    # creation de la mere du conjoint
-    idbio_mere_conjoint = services.create_bio_minibio(prenom_mere_conjoint, nom_famille_mere_conjoint, None, None,
-                                                      colissithon_url_port)
-    services.bind_bio_colissithon(idbio, idbio_mere_conjoint, colissithon_url_port)
+    if 'Conjoint' in habilitation_json['94A']:
+        idbio_conjoint = services.create_bio_minibio(prenom_conjoint, nom_famille_conjoint, None, None,
+                                                     colissithon_url_port)
+        # idbio_conjoint="0987654321"
+        services.bind_bio_colissithon(idbio, idbio_conjoint, colissithon_url_port)
+        # creation du pere du conjoint
+        idbio_pere_conjoint = services.create_bio_minibio(prenom_pere_conjoint, nom_famille_pere_conjoint, None, None,
+                                                          colissithon_url_port)
+        services.bind_bio_colissithon(idbio, idbio_pere_conjoint, colissithon_url_port)
+        # creation de la mere du conjoint
+        idbio_mere_conjoint = services.create_bio_minibio(prenom_mere_conjoint, nom_famille_mere_conjoint, None, None,
+                                                          colissithon_url_port)
+        services.bind_bio_colissithon(idbio, idbio_mere_conjoint, colissithon_url_port)
 
     # parcours des destinations pour les envoyer dans file kafka travelthon
     # voyages_in_travelthon(voyage_json, idbio, travelthon_in, producer)
